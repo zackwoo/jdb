@@ -10,7 +10,20 @@
 
 
 define(["jquery"], function($) {
-	function Binder() {};
+	function Binder() {
+		var self = this;
+		self._watchers={
+			"bindDomEvt":null//绑定视图事件
+		};
+	};
+
+	Binder.prototype.addBindDomWatch = function(func) {
+		var self = this;
+		if (!$.isFunction(func)) {
+			throw new Error("参数必须是function");
+		};
+		self._watchers["bindDomEvt"]=func;
+	};
 
 	Binder.prototype.get = function(mock, expression) {
 		var props = expression.split(".");
@@ -54,8 +67,13 @@ define(["jquery"], function($) {
 		});
 		return target.set(value);
 	};
-	Binder.prototype.bindDom = function(dom, value) {
+	Binder.prototype.bindDom = function(dom, rawValue) {
+		var self = this;
 		var $dom = $(dom);
+		var value = rawValue;
+		if ($.isFunction(self._watchers["bindDomEvt"])) {
+			value = self._watchers["bindDomEvt"].call(dom,rawValue);
+		};
 		switch (dom.tagName) {
 			case "INPUT":
 				$dom.val(value);
@@ -68,7 +86,6 @@ define(["jquery"], function($) {
 	Binder.prototype.bindObject = function(obj,expression,dom) {
 		var self = this;
 		var $dom = $(dom);
-		console.log($dom.val());
 		switch (dom.tagName) {
 			case "INPUT":
 				var value = $dom.val();

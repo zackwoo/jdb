@@ -67,7 +67,7 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 						var $mockItemDom = $(this);
 						var path = dir.key + "[" + index + "]." + $mockItemDom.attr("jdb-item");
 						$mockItemDom.attr("jdb-model", path);
-						binder.get(self._mock,directive.pares(path).key).registerDom(this)
+						binder.get(self._mock, directive.pares(path).key).registerDom(this)
 
 					});
 					$mockDom.show();
@@ -84,9 +84,9 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 
 	JDB.prototype._eventBind = function($dom) {
 		var self = this;
-		$dom.on("keyup click",function(){
+		$dom.on("keyup click", function() {
 			var dir = directive.pares($dom.attr('jdb-model'));
-			binder.bindObject(self._mock,dir.key,this);
+			binder.bindObject(self._mock, dir.key, this);
 		});
 	};
 
@@ -99,5 +99,17 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 		.filter("toLowerCase", function(value) {
 			return value.toString().toLowerCase();
 		});
+	//注册绑定数据监控过滤器处理
+	binder.addBindDomWatch(function(rawValue) {
+		var dom = this;
+		var dir = directive.pares($(dom).attr('jdb-model'));
+		var value = rawValue
+		if (dir.filter.length) {
+			$.each(dir.filter,function(i,item){
+				value = jdb._filter[item].call(dom,value);
+			})
+		} 
+		return value;
+	});
 	return jdb;
 });

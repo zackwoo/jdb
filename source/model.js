@@ -20,7 +20,6 @@ define(["jquery","binder"], function($,binder) {
 
 	/**
 	 * 创建obj的复制品 
-	 * ex: user.name
 	 */
 	function Model(raw, property) {
 		var self = this;
