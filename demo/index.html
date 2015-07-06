@@ -1,0 +1,101 @@
+
+<!doctype html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>JDB Demo</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<script data-main="main" src="./require.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="row">
+					<table class="table table-bordered">
+						<tr>
+							<th colspan="5">自定义表头</th>
+						</tr>
+						<tr>
+							<th>用户姓名</th>
+							<th>年龄</th>
+							<th>性别</th>
+							<th>兴趣爱好</th>
+							<th>所在城市</th>
+						</tr>
+						<tr jdb-model="list">
+							<td jdb-item="name | toUpperCase "></td>
+							<td jdb-item="age"></td>
+							<td jdb-item="gender"></td>
+							<td></td>
+							<td jdb-item="city"></td>
+						</tr>
+						<tr>
+							<td colspan="5">脚注部分...</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="username" class="col-sm-4 control-label">用户姓名</label>
+						<div class="col-sm-6">
+							<input type="text" jdb-model="currentUser.name" class="form-control" id="username" placeholder="请输入用户姓名"></div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-4 control-label">密码</label>
+						<div class="col-sm-6">
+							<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码"></div>
+					</div>
+					<div class="form-group">
+						<label for="gender" class="col-sm-4 control-label">性别</label>
+						<div class="col-sm-6">
+
+							<div class="radio">
+								<label>
+									<input type="radio" name="gender" id="gender1" value="1" checked>男</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="gender" id="gender2" value="0" checked>女</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="interest" class="col-sm-4 control-label">兴趣爱好</label>
+						<div class="col-sm-6">
+							<label class="checkbox-inline">
+								<input type="checkbox" id="interest1" value="eat">吃饭</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="interest2" value="sleep">睡觉</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="interest3" value="ddd">打豆豆</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="city" class="col-sm-4 control-label">所在城市</label>
+						<div class="col-sm-6">
+							<select id="city" class="form-control">
+								<option>上海</option>
+								<option>北京</option>
+								<option>广东</option>
+								<option>青岛</option>
+								<option>大连</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-5 col-sm-7">
+							<button type="submit" class="btn btn-default">添加</button>
+							<button type="button" id="btnAge" class="btn btn-default">修改年龄</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
