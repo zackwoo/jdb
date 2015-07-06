@@ -1,10 +1,11 @@
 define({
 	"currentUser": {
+		"password":"password",
 		"name": "zack123",
 		"age": "18",
-		"gender": 0,
-		"interest":[],
-		"city":"上海"
+		"gender": 1,
+		"interest":['eat','ddd'],
+		"city":"青岛"
 	},
 	"list": [{
 		"name": "zack",

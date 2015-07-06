@@ -50,6 +50,28 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 	////////////////////////////////////////////////////
 	JDB.prototype._scan = function() {
 		var self = this;
+		$("[jdb-repeat]").each(function() {
+			var $dom = $(this);
+			var dir = directive.pares($dom.attr('jdb-repeat'));
+			var mock = binder.get(self._mock, dir.key);
+			// 移除原本自动生成的控件
+			$('[jdb-mock="' + dir.key + '"]').remove();
+			$.each(mock, function(index, item) {
+				$mockDom = $dom.clone();
+				$mockDom.attr("jdb-mock", dir.key)
+				$mockDom.find("[jdb-item]").each(function() {
+					var $mockItemDom = $(this);
+					var path = dir.key + "[" + index + "]." + $mockItemDom.attr("jdb-item");
+					$mockItemDom.attr("jdb-model", path);
+					binder.get(self._mock, directive.pares(path).key).registerDom(this)
+
+				});
+				$mockDom.show();
+				$dom.before($mockDom);
+				self._eventBind($mockDom);
+			})
+			$dom.hide();
+		});
 		$("[jdb-model]").each(function() {
 			var $dom = $(this);
 			if ($dom.parent("[jdb-model]").length) {
@@ -57,28 +79,8 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 			}
 			var dir = directive.pares($dom.attr('jdb-model'));
 			var mock = binder.get(self._mock, dir.key);
-			if ($.isArray(mock)) {
-				// 移除原本自动生成的控件
-				$('[jdb-mock="' + dir.key + '"]').remove();
-				$.each(mock, function(index, item) {
-					$mockDom = $dom.clone();
-					$mockDom.attr("jdb-mock", dir.key)
-					$mockDom.find("[jdb-item]").each(function() {
-						var $mockItemDom = $(this);
-						var path = dir.key + "[" + index + "]." + $mockItemDom.attr("jdb-item");
-						$mockItemDom.attr("jdb-model", path);
-						binder.get(self._mock, directive.pares(path).key).registerDom(this)
-
-					});
-					$mockDom.show();
-					$dom.before($mockDom);
-					self._eventBind($mockDom);
-				})
-				$dom.hide();
-			} else {
-				mock.registerDom(this);
-				self._eventBind($dom);
-			};
+			mock.registerDom(this);
+			self._eventBind($dom);
 		});
 	};
 
@@ -105,10 +107,10 @@ define(["jquery", "model", "binder", "directive"], function($, model, binder, di
 		var dir = directive.pares($(dom).attr('jdb-model'));
 		var value = rawValue
 		if (dir.filter.length) {
-			$.each(dir.filter,function(i,item){
-				value = jdb._filter[item].call(dom,value);
+			$.each(dir.filter, function(i, item) {
+				value = jdb._filter[item].call(dom, value);
 			})
-		} 
+		}
 		return value;
 	});
 	return jdb;

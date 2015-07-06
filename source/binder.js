@@ -12,8 +12,8 @@
 define(["jquery"], function($) {
 	function Binder() {
 		var self = this;
-		self._watchers={
-			"bindDomEvt":null//绑定视图事件
+		self._watchers = {
+			"bindDomEvt": null //绑定视图事件
 		};
 	};
 
@@ -22,7 +22,7 @@ define(["jquery"], function($) {
 		if (!$.isFunction(func)) {
 			throw new Error("参数必须是function");
 		};
-		self._watchers["bindDomEvt"]=func;
+		self._watchers["bindDomEvt"] = func;
 	};
 
 	Binder.prototype.get = function(mock, expression) {
@@ -43,9 +43,9 @@ define(["jquery"], function($) {
 				target = target[item];
 			}
 		});
-		
+
 		return target;
-		
+
 	};
 	Binder.prototype.set = function(obj, expression, value) {
 		var props = expression.split(".");
@@ -72,10 +72,18 @@ define(["jquery"], function($) {
 		var $dom = $(dom);
 		var value = rawValue;
 		if ($.isFunction(self._watchers["bindDomEvt"])) {
-			value = self._watchers["bindDomEvt"].call(dom,rawValue);
+			value = self._watchers["bindDomEvt"].call(dom, rawValue);
 		};
 		switch (dom.tagName) {
 			case "INPUT":
+				var type = $dom.attr('type');
+				if (type.toLowerCase() === "radio" || type.toLowerCase() === "checkbox") {
+					$dom.prop('checked', value == $dom.val());
+				} else {
+					$dom.val(value);
+				};
+				break;
+			case "SELECT":
 				$dom.val(value);
 				break;
 			default:
@@ -83,13 +91,13 @@ define(["jquery"], function($) {
 				break;
 		};
 	};
-	Binder.prototype.bindObject = function(obj,expression,dom) {
+	Binder.prototype.bindObject = function(obj, expression, dom) {
 		var self = this;
 		var $dom = $(dom);
 		switch (dom.tagName) {
 			case "INPUT":
 				var value = $dom.val();
-				self.set(obj,expression,value);
+				self.set(obj, expression, value);
 				break;
 			default:
 				break;
