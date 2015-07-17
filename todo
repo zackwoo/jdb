@@ -1,0 +1,4 @@
+1. checkbox多选绑定
+2. 获取改变后的对象
+3. 模拟对象array属性
+4. 指令支持（jdb-model,jdb-repeat,jdb-show,jdb-hide）

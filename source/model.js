@@ -18,6 +18,10 @@ define(["jquery","binder"], function($,binder) {
 		}
 	};
 
+	function ModelCollection(raw, property){
+		//数组格式的实现模拟
+	}
+
 	/**
 	 * 创建obj的复制品 
 	 */
